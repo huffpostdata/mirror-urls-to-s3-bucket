@@ -1,0 +1,16 @@
+{
+  "name": "mirror-urls-to-s3-bucket",
+  "version": "1.0.0",
+  "description": "Copies a site to S3, including headers.",
+  "main": "mirror.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.4.2",
+    "debug": "^2.2.0",
+    "request": "^2.72.0"
+  }
+}
