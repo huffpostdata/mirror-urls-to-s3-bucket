@@ -23,7 +23,6 @@ if (!/^s3:\/\//.test(s3_bucket_with_prefix)) {
 const s3_bucket = s3_bucket_with_prefix.substring(5)
 
 const s3 = new AWS.S3()
-
 /**
  * Calls `callback` with an Array of { path, key } Objects.
  *
@@ -76,7 +75,6 @@ function upload_response(key, response, body, callback) {
         ContentLanguage: headers['content-language'],
         ContentLength: headers['content-length'],
       }
-
       if (Math.floor(response.statusCode / 100) === 3) {
         s3_params.WebsiteRedirectLocation = headers['redirect']
       }
@@ -111,8 +109,27 @@ function upload_response(key, response, body, callback) {
 
       break
     case 404:
-      debug(`SKIP 404 /${key}`)
-      callback(null)
+      if(key.indexOf("404") !== -1){//intentional
+        const headers = response.headers
+
+        const s3_params = {
+          Bucket: s3_bucket,
+          Key: key,
+          ACL: 'public-read',
+          Body: body,
+          CacheControl: headers['cache-control'],
+          ContentDisposition: headers['content-disposition'],
+          ContentType: headers['content-type'],
+          ContentLanguage: headers['content-language'],
+          ContentLength: headers['content-length'],
+        }
+        debug(`PUT ${s3_bucket_with_prefix}/${key}`)
+        s3.putObject(s3_params, callback)
+
+      }else{
+        debug(`SKIP 404 /${key}`)
+        callback(null)
+      }
       break
     default:
       callback(new Error(`Got status code ${response.statusCode}`))
