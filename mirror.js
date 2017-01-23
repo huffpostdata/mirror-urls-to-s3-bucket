@@ -77,7 +77,7 @@ function upload_response(key, response, body, callback) {
         ContentLength: headers['content-length'],
       }
       if (Math.floor(response.statusCode / 100) === 3) {
-        s3_params.WebsiteRedirectLocation = headers['redirect']
+        s3_params.WebsiteRedirectLocation = headers.location
       }
 
       debug(`PUT ${s3_bucket_with_prefix}/${key}`)
