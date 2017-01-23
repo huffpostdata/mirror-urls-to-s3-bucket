@@ -44,7 +44,7 @@ function load_path_objects(filename, callback) {
     const objects = lines.map(line => {
       return {
         path: line,
-        key: line == '' ? 'index.html' : line
+        key: line == '' ? 'index' : line
       }
     })
 
