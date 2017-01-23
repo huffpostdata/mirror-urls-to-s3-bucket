@@ -69,6 +69,7 @@ function upload_response(key, response, body, callback) {
         Key: key,
         ACL: 'public-read',
         Body: body,
+        ServerSideEncryption: 'AES256',
         CacheControl: headers['cache-control'],
         ContentDisposition: headers['content-disposition'],
         ContentType: headers['content-type'],
@@ -91,6 +92,7 @@ function upload_response(key, response, body, callback) {
         Key: key,
         ACL: 'public-read',
         Body: 'For years, this page produced error messages. Now it produces these two sentences.',
+        ServerSideEncryption: 'AES256',
         CacheControl: 'public; max-age=3600',
         ContentType: 'text/plain; charset=utf-8'
       }, callback)
@@ -103,13 +105,14 @@ function upload_response(key, response, body, callback) {
         Key: key,
         ACL: 'public-read',
         Body: 'Access denied (there is no more content here)',
+        ServerSideEncryption: 'AES256',
         CacheControl: 'public; max-age=3600',
         ContentType: 'text/plain; charset=utf-8'
       }, callback)
 
       break
     case 404:
-      if(key.indexOf("404") !== -1){//intentional
+      if (key.indexOf("404") !== -1) { //intentional
         const headers = response.headers
 
         const s3_params = {
@@ -117,6 +120,7 @@ function upload_response(key, response, body, callback) {
           Key: key,
           ACL: 'public-read',
           Body: body,
+          ServerSideEncryption: 'AES256',
           CacheControl: headers['cache-control'],
           ContentDisposition: headers['content-disposition'],
           ContentType: headers['content-type'],
@@ -125,8 +129,7 @@ function upload_response(key, response, body, callback) {
         }
         debug(`PUT ${s3_bucket_with_prefix}/${key}`)
         s3.putObject(s3_params, callback)
-
-      }else{
+      } else {
         debug(`SKIP 404 /${key}`)
         callback(null)
       }
